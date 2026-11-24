@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await request("/announcements");
       if (version !== publicRequest) return;
       banner.replaceChildren();
-      data.filter((item) => status(item) === "Active").forEach((item) => {
+      data.forEach((item) => {
         const card = element("article", "announcement-banner");
         card.append(element("p", "eyebrow", "SCHOOL ANNOUNCEMENT"),
           element("h3", "", item.title), element("p", "announcement-copy", item.message));
