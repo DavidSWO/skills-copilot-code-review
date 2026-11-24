@@ -98,35 +98,26 @@ document.addEventListener("DOMContentLoaded", () => {
     fetchActivities();
   }
 
-  // Check if user is already logged in (from localStorage)
+  // Restore authentication only after the server validates the session cookie.
   function checkAuthentication() {
-    const savedUser = localStorage.getItem("currentUser");
-    if (savedUser) {
-      try {
-        currentUser = JSON.parse(savedUser);
-        updateAuthUI();
-        // Verify the stored user with the server
-        validateUserSession(currentUser.username);
-      } catch (error) {
-        console.error("Error parsing saved user", error);
-        logout(); // Clear invalid data
-      }
-    }
-
-    // Set authentication class on body
+    validateUserSession();
     updateAuthBodyClass();
   }
 
   // Validate user session with the server
-  async function validateUserSession(username) {
+  async function validateUserSession() {
     try {
       const response = await fetch(
-        `/auth/check-session?username=${encodeURIComponent(username)}`
+        "/auth/check-session"
       );
 
       if (!response.ok) {
-        // Session invalid, log out
-        logout();
+        if (response.status !== 401) {
+          throw new Error("Unable to validate your session.");
+        }
+        currentUser = null;
+        localStorage.removeItem("currentUser");
+        updateAuthUI();
         return;
       }
 
@@ -153,6 +144,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     updateAuthBodyClass();
+    document.getElementById("manage-announcements").classList.toggle("hidden", !currentUser);
+    document.dispatchEvent(new CustomEvent("auth-changed", { detail: Boolean(currentUser) }));
     // Refresh the activities to update the UI
     fetchActivities();
   }
@@ -203,7 +196,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Logout function
-  function logout() {
+  async function logout() {
+    try {
+      const response = await fetch("/auth/logout", { method: "POST" });
+      if (!response.ok) throw new Error("Logout failed.");
+    } catch (error) {
+      console.error("Error during logout:", error);
+      showMessage("Unable to log out. Please try again.", "error");
+      return;
+    }
     currentUser = null;
     localStorage.removeItem("currentUser");
     updateAuthUI();
@@ -237,6 +238,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // Event listeners for authentication
   loginButton.addEventListener("click", openLoginModal);
   logoutButton.addEventListener("click", logout);
+  document.addEventListener("session-expired", () => {
+    currentUser = null;
+    localStorage.removeItem("currentUser");
+    updateAuthUI();
+    showMessage("Your session has expired. Please sign in again.", "error");
+  });
   closeLoginModal.addEventListener("click", closeLoginModalHandler);
 
   // Close login modal when clicking outside

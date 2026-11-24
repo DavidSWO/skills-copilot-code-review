@@ -614,9 +614,11 @@ footer {
 
 /* User controls in header */
 #user-controls {
-  position: absolute;
-  top: 10px;
-  right: 15px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
 }
 
 #user-status {
@@ -663,4 +665,260 @@ footer {
 
 #logout-button:hover {
   background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* School noticeboard */
+#announcements {
+  padding: 0;
+  margin-bottom: 16px;
+  background: transparent;
+  box-shadow: none;
+  display: grid;
+  gap: 10px;
+}
+
+.announcement-banner {
+  padding: 20px 24px;
+  background: linear-gradient(110deg, #eef0ff, #ffffff);
+  border: 1px solid #d6daf7;
+  border-left: 5px solid var(--primary-light);
+  border-radius: 10px;
+}
+
+.eyebrow {
+  color: var(--primary-light);
+  font-size: 0.68rem;
+  font-weight: bold;
+  letter-spacing: 0.12em;
+  margin-bottom: 6px;
+}
+
+#announcements h3 {
+  border: 0;
+  padding: 0;
+  margin-bottom: 6px;
+}
+
+.announcement-copy {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+#announcement-dialog {
+  margin: auto;
+  padding: 0;
+  width: min(980px, calc(100% - 32px));
+  max-height: calc(100dvh - 40px);
+  color: var(--text-primary);
+  background: var(--surface);
+  border: 0;
+  border-radius: 16px;
+  box-shadow: 0 24px 80px #00000040;
+}
+
+#announcement-dialog::backdrop {
+  background: #101534aa;
+  backdrop-filter: blur(4px);
+}
+
+.announcement-dialog-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 24px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(120deg, #f0f1ff, #ffffff);
+}
+
+.announcement-dialog-heading h2 {
+  color: var(--primary);
+  margin-bottom: 5px;
+  font-size: 1.5rem;
+}
+
+.announcement-dialog-heading p:not(.eyebrow),
+.announcement-hint,
+.announcement-dates,
+#announcement-form small,
+.optional {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+
+#close-announcements {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.announcement-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.announcement-history {
+  background: #f8f9fd;
+  padding: 24px;
+  border-right: 1px solid var(--border);
+}
+
+.announcement-list-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.announcement-hint {
+  margin: 4px 0 16px;
+}
+
+#announcement-list {
+  display: grid;
+  gap: 12px;
+  max-height: 480px;
+  overflow-y: auto;
+}
+
+.announcement-card {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: white;
+  overflow-wrap: anywhere;
+}
+
+.announcement-card h4 {
+  color: var(--primary);
+  margin: 10px 0 6px;
+  font-size: 1rem;
+}
+
+.announcement-status {
+  display: inline-block;
+  border-radius: 20px;
+  padding: 3px 9px;
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+
+.announcement-status.active { color: #21613b; background: #e4f4e9; }
+.announcement-status.scheduled { color: #234b99; background: #e7efff; }
+.announcement-status.expired { color: #666; background: #ededed; }
+
+.announcement-dates {
+  white-space: pre-line;
+  margin-top: 12px;
+  line-height: 1.7;
+}
+
+.announcement-card-actions,
+.announcement-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+#announcement-form {
+  padding: 24px;
+}
+
+#announcement-form h3 {
+  color: var(--primary);
+  margin-bottom: 20px;
+}
+
+#announcement-form .form-group {
+  margin-bottom: 16px;
+}
+
+#announcement-form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+#announcement-form input:not([type="hidden"]),
+#announcement-form textarea {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid #c9cddd;
+  border-radius: 7px;
+  background: white;
+  font-size: 0.9rem;
+}
+
+#announcement-form textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+
+#announcement-form small {
+  display: block;
+  margin-top: 5px;
+}
+
+#announcement-dialog button {
+  min-height: 36px;
+}
+
+.quiet-button {
+  background: #eceef8;
+  color: var(--primary);
+}
+
+.quiet-button:hover { background: #dfe3f6; }
+.danger-button { color: var(--error); background: var(--error-light); }
+.danger-button:hover { background: #ffd9df; }
+
+#announcement-dialog button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+#announcement-dialog :focus-visible,
+#manage-announcements:focus-visible {
+  outline: 3px solid var(--primary-light);
+  outline-offset: 3px;
+}
+
+.announcement-empty {
+  padding: 24px 12px;
+  text-align: center;
+  color: var(--text-secondary);
+  border: 1px dashed #c9cddd;
+  border-radius: 10px;
+}
+
+.announcement-delete-confirmation {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 6px;
+  background: var(--error-light);
+}
+
+.announcement-delete-confirmation p { margin-bottom: 8px; }
+.announcement-delete-confirmation button { margin-right: 6px; }
+
+#announcement-feedback {
+  margin: 16px 24px 0;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+#announcement-dialog .message.error,
+#announcements .message.error { color: var(--error); background: var(--error-light); }
+#announcement-dialog .message.success { color: var(--success); background: var(--success-light); }
+
+@media (max-width: 700px) {
+  .announcement-workspace { grid-template-columns: minmax(0, 1fr); }
+  .announcement-history { border-right: 0; border-bottom: 1px solid var(--border); }
+  #announcement-list { max-height: 280px; }
+  .announcement-dialog-heading,
+  .announcement-history,
+  #announcement-form { padding: 18px; }
+  .announcement-banner { padding: 16px; }
 }
